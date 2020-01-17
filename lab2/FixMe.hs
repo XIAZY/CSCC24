@@ -1,4 +1,4 @@
-module Labw02 where
+module FixMe where
 
 {-
 pow b e computes the exponentiation: b raised to the power e.  Don't worry about

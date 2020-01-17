@@ -1,9 +1,9 @@
 {-
 How to use:
 
-* All tests: runghc testLabw02.hs
+* All tests: runghc testFixMe.hs
 
-* Individual test e.g. 2nd: runghc testLabw02.hs 1
+* Individual test e.g. 2nd: runghc testFixMe.hs 1
 -}
 
 import System.Environment (getArgs)
@@ -11,11 +11,11 @@ import System.Exit (exitFailure)
 import Test.HUnit
 import Text.Read (readMaybe)
 
-import Labw02 (pow)
+import FixMe (pow)
 
 tests = [ "0^0" ~: pow 0 0 ~?= 1
         , "7^0" ~: pow 7 0 ~?= 1
-        , "(-3)^43" ~: pow (-3) 43 ~?= -328256967394537077627
+        , "(-3)^5" ~: pow (-3) 5 ~?= -243
         -- more tests during marking
         ]
 
