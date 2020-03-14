@@ -1,0 +1,110 @@
+Put your answers in a PDF file; name it if-then-else.pdf.
+
+Warning: Other file formats will NOT receive any mark.
+
+Question 1: 3 marks
+         2: 2 marks
+         3: 1 mark
+
+
+Question 1
+----------
+
+Most programming languages support if-then-else statements, with the "else"
+being optional.  A long time ago, this was done carelessly and resulted in
+ambiguous grammars.  Here is a simplified re-living of that time, with test
+conditions and statements replaced by terminal symbols to show the gist and
+avoid distractions.
+
+<stmt> ::= <cond> | "A" | "B" | "C"
+<cond> ::= "if" <test> "then" <stmt> [ "else" <stmt> ]
+<test> ::= "T1" | "T2"
+
+Give two different parse trees for 
+
+    if T1 then if T2 then A else B
+
+Reminder: A parse tree, rather than an abstract syntax tree, is required.
+
+S
+|
+C
+|      \       \     
+if      T     then
+        |       |
+        T1      S
+                |
+                C
+                |     \       \        \         \          \
+                if     T      then      S        else        S
+                       |                |                    |
+                       T2               A                    B
+                
+
+S
+|
+C
+|      \       \         \          \     
+if      T     then        else       S
+        |       |                    |
+        T1      S                    B
+                |
+                C
+                |     \       \        \
+                if     T      then      S
+                       |                |
+                       T2               A
+
+Question 2
+----------
+
+A way out is to add brackets or equivalent to mark endings (even beginnings),
+which is adopted by many languages.  Here is how Bourne shell does it:
+
+<stmt> ::= <cond> | "A" | "B" | "C"
+<cond> ::= "if" <test> "then" <stmt> [ else <stmt> ] "fi"
+<test> ::= "T1" | "T2"
+
+(For simplicity, I omit "elif".)
+
+Add "fi"s to
+
+    if T1 then if T2 then A else B
+
+to fit this grammar.  There are two versions, inspired by the two parse trees
+witnessed in Question 1; give both versions.  (No need to draw the new parse
+trees.)
+
+    if T1 then if T2 then A else B fi fi
+    if T1 then if T2 then A fi else B fi
+
+Question 3
+----------
+
+But if "else" is compulsory, there is suddenly no ambiguity!  This is a glimpse
+of how CFG ambiguity is very tricky because tiny changes make a big difference.
+
+<stmt> ::= <cond> | "A" | "B" | "C"
+<cond> ::= "if" <test> "then" <stmt> "else" <stmt>
+<test> ::= "T1" | "T2"
+
+Give a parse tree for
+
+    if T1 then if T2 then A else B else C
+
+(and discover that you have only one choice).
+
+S
+|
+C
+|      \       \         \          \     
+if      T     then        else       S
+        |       |                    |
+        T1      S                    C
+                |
+                C
+                |     \       \        \
+                if     T      then      S
+                       |                |
+                       T2               B
+
