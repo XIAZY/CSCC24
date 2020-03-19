@@ -29,19 +29,14 @@ import SExprDef
 --
 -- (If you're curious about initial leading spaces, see `mainParser` below.)
 
--- | Parse a thing that is wrapped between open and close brackets.
-between :: Parser open          -- ^ open bracket parser
-        -> Parser close         -- ^ close bracket parser
-        -> Parser a             -- ^ thing parser
-        -> Parser a             -- ^ return the thing parsed
-between open close p = open *> p <* close
-
 
 sexpr :: Parser SExpr
-sexpr = between (openParen) (closeParen) (fmap (\y -> List y) (some (help_map <|> sexpr))) <|> help_map
+sexpr = fmap Ident (identifier []) <|>
+  (openParen 
+  >> some sexpr 
+  >>= \es -> closeParen 
+  >> return (List es))
 
-help_map :: Parser SExpr
-help_map = fmap (\x -> Ident x) (identifier [])
 
 -- If you're interested: Initial leading spaces, as well as (lack of) trailing
 -- junk, are handled by having a "main parser":
